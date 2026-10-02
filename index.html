@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>quietfolio — the portfolio that ships itself | motion résumé</title>
+<meta name="description" content="quietfolio: a minimal, fast, accessible, SEO-first developer portfolio template (Next.js + Tailwind + Framer Motion). Static, no backend. With a 23.5s code-driven launch showreel. A motion-design résumé by Muhammed Swalahudheen C V.">
+<meta property="og:title" content="quietfolio — minimal, fast, open source portfolio">
+<meta property="og:description" content="Next.js · Tailwind · Framer Motion. Static export, Lighthouse 100s, ⌘K palette, pixel banner, printable résumé. Plus a code-driven 23.5s launch showreel.">
+<meta property="og:image" content="media/cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#08080a">
+<link rel="icon" href="media/poster.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"quietfolio showcase","url":"https://salahu01.github.io/quietfolio/","author":{"@type":"Person","name":"Muhammed Swalahudheen C V"},"description":"Showcase site for quietfolio, a minimal fast accessible SEO-first developer portfolio template with a code-driven motion showreel."}
+</script>
+<style>
+:root{
+  --bg:#08080a; --bg2:#0e0e13; --ink:#f2efe6; --dim:#9a97a8; --line:rgba(255,255,255,.1);
+  --lime:#c8ff2e; --viol:#8b7bff; --coral:#ff5c38; --mint:#5ef2c4; --paper:#f4f1ea;
+  --mono:'JetBrains Mono',ui-monospace,monospace; --sans:'Space Grotesk',system-ui,sans-serif; --serif:'Instrument Serif',Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden;scroll-behavior:smooth}
+body{background:var(--bg);overflow-x:hidden;transition:background .5s,color .5s}
+html[data-theme="light"]{--bg:#f4f1ea;--bg2:#e9e4d6;--ink:#111114;--dim:#5c5a68;--line:rgba(0,0,0,.12)}
+html[data-theme="light"] body{background:var(--bg)}
+::selection{background:var(--lime);color:#000}
+a{color:inherit}
+.mono{font-family:var(--mono)} .serif{font-family:var(--serif);font-style:italic;font-weight:400}
+.wrap{width:min(1280px,100% - clamp(32px,7vw,120px));margin:0 auto}
+.grad{background:linear-gradient(100deg,var(--lime),var(--mint) 35%,var(--viol) 65%,var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent;background-size:220% 100%;animation:gshift 9s linear infinite}
+@keyframes gshift{to{background-position:220% 0}}
+.grain{position:fixed;inset:-50%;pointer-events:none;z-index:900;opacity:.07;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 1s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(-2%,-1%)}100%{transform:translate(3%,3%)}}
+/* cursor + trail */
+.cur,.cur-dot{position:fixed;left:0;top:0;pointer-events:none;z-index:1200;border-radius:50%;mix-blend-mode:difference}
+.cur{width:36px;height:36px;border:1px solid #fff;margin:-18px 0 0 -18px;transition:width .3s,height .3s,margin .3s,background .3s}
+.cur.big{width:88px;height:88px;margin:-44px 0 0 -44px;background:#fff}
+.cur-dot{width:6px;height:6px;background:#fff;margin:-3px 0 0 -3px}
+#trail{position:fixed;inset:0;pointer-events:none;z-index:1199}
+#trail i{position:absolute;width:7px;height:7px;background:var(--lime);image-rendering:pixelated;pointer-events:none}
+@media(hover:none){.cur,.cur-dot,#trail{display:none}}
+/* loader */
+#loader{position:fixed;inset:0;z-index:2000;background:#08080a;color:#f2efe6;display:flex;align-items:flex-end;justify-content:space-between;padding:32px;overflow:hidden}
+#loader .n{font-size:clamp(80px,17vw,240px);font-weight:700;line-height:.8;letter-spacing:-.05em}
+#loader .lbl{font-family:var(--mono);font-size:12px;color:#9a97a8;text-transform:uppercase;letter-spacing:.2em;max-width:280px;text-align:right;line-height:1.8}
+#loader .bar{position:absolute;left:0;top:0;height:2px;background:linear-gradient(90deg,var(--lime),var(--viol),var(--coral));width:0}
+#loader .px{position:absolute;inset:0;display:grid;grid-template-columns:repeat(24,1fr);grid-template-rows:repeat(14,1fr);pointer-events:none}
+#loader .px i{background:var(--lime);opacity:0}
+/* progress + nav */
+#progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--lime),var(--viol),var(--coral));z-index:1000;width:0}
+nav{position:fixed;top:0;left:0;right:0;z-index:800;display:flex;justify-content:space-between;align-items:center;padding:16px 22px;mix-blend-mode:difference;color:#fff}
+nav .logo{display:flex;align-items:center;gap:10px;font-weight:700;text-decoration:none;font-size:18px;letter-spacing:-.02em}
+nav .logo b{width:22px;height:22px;background:#c8ff2e;display:inline-grid;place-items:center;color:#000;font-size:13px;font-family:var(--mono)}
+nav ul{display:flex;gap:22px;list-style:none;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.14em}
+nav ul a{text-decoration:none;opacity:.75} nav ul a:hover{opacity:1}
+@media(max-width:900px){nav ul{display:none}}
+/* hero */
+#hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden;padding:120px 0 0}
+#field{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:.9}
+#hero .veil{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,transparent 20%,rgba(8,8,10,.5) 75%),linear-gradient(transparent 55%,var(--bg));pointer-events:none}
+html[data-theme="light"] #hero .veil{background:radial-gradient(ellipse at 50% 100%,transparent 20%,rgba(244,241,234,.4) 75%),linear-gradient(transparent 55%,var(--bg))}
+#hero .content{position:relative;z-index:2;width:100%;padding-bottom:26px}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim);display:flex;gap:14px;align-items:center}
+.kicker:before{content:"";width:34px;height:1px;background:currentColor}
+h1.title{font-size:clamp(56px,13.5vw,220px);line-height:.84;letter-spacing:-.06em;font-weight:700;margin:20px 0 18px}
+h1.title .ch{display:inline-block;will-change:transform}
+.hero-sub{font-size:clamp(19px,2.4vw,32px);line-height:1.2;max-width:900px;font-weight:300}
+.hero-row{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 24px;border-radius:999px;font-family:var(--mono);font-size:13px;text-transform:uppercase;letter-spacing:.1em;text-decoration:none;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 6%,transparent);backdrop-filter:blur(10px);transition:transform .3s,background .3s,color .3s;color:var(--ink)}
+.btn.solid{background:var(--lime);color:#0a0c07;border-color:var(--lime);font-weight:600}
+.btn:hover{transform:translateY(-2px)}
+.btn .arr{transition:transform .3s} .btn:hover .arr{transform:translateX(4px)}
+.hero-hud{display:flex;gap:26px;margin-top:34px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.08em}
+.hero-hud b{color:var(--ink)} .hero-hud .ok{color:var(--lime)}
+.scrollhint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);z-index:2;font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:10px}
+.scrollhint i{width:1px;height:44px;background:linear-gradient(var(--ink),transparent);animation:drip 1.8s ease-in-out infinite;transform-origin:top}
+@keyframes drip{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+/* marquee */
+.marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;padding:24px 0;background:var(--bg)}
+.marquee .track{display:flex;gap:60px;width:max-content;animation:mq 36s linear infinite}
+.marquee .it{display:flex;align-items:baseline;gap:14px;white-space:nowrap}
+.marquee .it b{font-size:clamp(30px,4.6vw,58px);font-weight:700;letter-spacing:-.04em}
+.marquee .it span{font-family:var(--mono);font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:.14em}
+.marquee .it em{color:var(--viol);font-style:normal;font-size:26px}
+@keyframes mq{to{transform:translateX(-50%)}}
+section{position:relative}
+.sec{padding:clamp(90px,14vh,170px) 0}
+.sec-h{display:grid;grid-template-columns:120px 1fr;gap:24px;margin-bottom:56px}
+.sec-h .idx{font-family:var(--mono);font-size:12px;color:var(--dim);padding-top:14px;letter-spacing:.14em}
+.sec-h h2{font-size:clamp(38px,6.4vw,96px);line-height:.94;letter-spacing:-.05em;font-weight:700}
+.sec-h p{grid-column:2;max-width:680px;color:var(--dim);font-size:clamp(16px,1.5vw,20px);line-height:1.55;margin-top:18px}
+.sec-h p b{color:var(--ink)}
+@media(max-width:720px){.sec-h{grid-template-columns:1fr}.sec-h p{grid-column:1}}
+/* reel */
+.reel-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:22px;align-items:stretch}
+@media(max-width:980px){.reel-grid{grid-template-columns:1fr}}
+.player{position:relative;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:#000;aspect-ratio:4/5;max-height:78vh;width:100%}
+.player video{width:100%;height:100%;object-fit:cover;display:block}
+.player .cap{position:absolute;left:14px;bottom:14px;font-family:var(--mono);font-size:11px;padding:8px 12px;border-radius:999px;background:rgba(0,0,0,.6);color:#fff;backdrop-filter:blur(8px);letter-spacing:.06em;display:flex;gap:8px;align-items:center}
+.player .cap i{width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 12px var(--lime)}
+.chapters{display:flex;flex-direction:column;gap:12px}
+.chap{border:1px solid var(--line);border-radius:18px;padding:20px 22px;background:color-mix(in srgb,var(--ink) 3%,transparent);cursor:pointer;transition:transform .25s,border-color .25s}
+.chap:hover{transform:translateX(6px);border-color:var(--lime)}
+.chap.on{border-color:var(--lime)}
+.chap .t{font-family:var(--mono);font-size:11px;color:var(--lime);letter-spacing:.14em}
+.chap h4{font-size:20px;letter-spacing:-.02em;margin:8px 0 6px}
+.chap p{font-size:14px;color:var(--dim);line-height:1.55}
+/* horizontal */
+#craft{overflow:hidden}
+.hwrap{min-height:100vh;display:flex;align-items:center;padding:60px 0}
+.htrack{display:flex;gap:26px;padding:0 max(clamp(16px,4vw,64px),calc((100vw - 1280px)/2));will-change:transform;align-items:stretch}
+.dintro{flex:none;width:min(420px,80vw);display:flex;flex-direction:column;justify-content:center}
+.dintro h2{font-size:clamp(48px,6.5vw,104px);line-height:.9;letter-spacing:-.055em}
+.dintro p{color:var(--dim);margin-top:20px;font-size:18px;line-height:1.5}
+.dcard{flex:none;width:min(540px,84vw);min-height:560px;border-radius:28px;border:1px solid var(--line);padding:32px;position:relative;overflow:hidden;display:flex;flex-direction:column;background:linear-gradient(170deg,color-mix(in srgb,var(--ink) 7%,transparent),transparent)}
+.dcard .num{font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:.16em}
+.dcard h3{font-size:clamp(26px,3vw,40px);line-height:1.02;letter-spacing:-.04em;margin:14px 0 12px}
+.dcard p{color:var(--dim);font-size:15.5px;line-height:1.6}
+.dcard .viz{flex:1;margin-top:20px;border-radius:16px;background:rgba(127,127,150,.08);border:1px solid var(--line);position:relative;overflow:hidden;min-height:220px;display:grid;place-items:center;padding:18px}
+.dcard .viz canvas{position:absolute;inset:0;width:100%;height:100%}
+.dcard code,.term code,.imp code{font-family:var(--mono);font-size:.85em;background:color-mix(in srgb,var(--ink) 10%,transparent);padding:2px 7px;border-radius:6px}
+@media(max-width:820px){.hwrap{display:block}.htrack{flex-direction:column;padding:0 16px;transform:none!important}.dcard{width:100%;min-height:0}.dintro{width:100%;margin-bottom:20px}}
+/* features */
+.feats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:980px){.feats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.feats{grid-template-columns:1fr}}
+.feat{border:1px solid var(--line);border-radius:20px;padding:26px;min-height:230px;display:flex;flex-direction:column;gap:12px;background:color-mix(in srgb,var(--ink) 2.5%,transparent);position:relative;overflow:hidden;transition:transform .3s,border-color .3s}
+.feat:hover{transform:translateY(-5px);border-color:var(--viol)}
+.feat .ico{font-size:30px}
+.feat h4{font-size:20px;letter-spacing:-.02em}
+.feat p{color:var(--dim);font-size:14.5px;line-height:1.6}
+.feat .tag{margin-top:auto;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--lime)}
+/* filter demo */
+.fdemo{margin-top:44px;border:1px solid var(--line);border-radius:22px;padding:26px;background:color-mix(in srgb,var(--ink) 2%,transparent)}
+.fdemo .bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;align-items:center}
+.chip{font-family:var(--mono);font-size:12px;padding:9px 15px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;letter-spacing:.06em;transition:background .2s,color .2s}
+.chip.on,.chip:hover{background:var(--ink);color:var(--bg)}
+.fgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:900px){.fgrid{grid-template-columns:repeat(2,1fr)}}
+.fcard{border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:opacity .35s,transform .35s}
+.fcard.hide{opacity:0;transform:scale(.92);pointer-events:none;position:absolute;visibility:hidden}
+.fcard .sw{height:96px}
+.fcard .bd{padding:14px}
+.fcard b{font-size:15px;letter-spacing:-.01em;display:block}
+.fcard span{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase}
+/* seo */
+.seo-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media(max-width:900px){.seo-grid{grid-template-columns:1fr}}
+.rings{display:flex;gap:26px;justify-content:center;padding:30px;border:1px solid var(--line);border-radius:22px;background:color-mix(in srgb,var(--ink) 2%,transparent);flex-wrap:wrap}
+.ring{text-align:center}
+.ring svg{width:130px;height:130px;transform:rotate(-90deg)}
+.ring .bgc{fill:none;stroke:var(--line);stroke-width:10}
+.ring .fgc{fill:none;stroke:var(--lime);stroke-width:10;stroke-linecap:round;stroke-dasharray:377;stroke-dashoffset:377}
+.ring b{font-size:30px;display:block;margin-top:8px}
+.ring span{font-family:var(--mono);font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.12em}
+.jl{border:1px solid var(--line);border-radius:22px;overflow:hidden}
+.jl header{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);padding:16px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between}
+.jl pre{padding:22px;font-family:var(--mono);font-size:12.5px;line-height:1.7;overflow-x:auto;white-space:pre}
+.jl .k{color:var(--viol)} .jl .s{color:var(--lime)}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+.pill{font-family:var(--mono);font-size:11px;padding:8px 13px;border-radius:999px;border:1px solid var(--line);color:var(--dim)}
+.pill b{color:var(--ink)}
+/* palette + theme demos */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:22px}
+@media(max-width:900px){.duo{grid-template-columns:1fr}}
+.mock{border:1px solid var(--line);border-radius:22px;overflow:hidden;background:color-mix(in srgb,var(--ink) 2%,transparent)}
+.mock header{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.mock header b{font-size:18px;letter-spacing:-.02em}
+.mock .stage{padding:22px;min-height:300px;position:relative}
+.kbtn{font-family:var(--mono);font-size:12px;border:1px solid var(--line);border-radius:8px;padding:7px 11px;background:transparent;color:var(--ink);cursor:pointer}
+.kbtn:hover{background:var(--ink);color:var(--bg)}
+#pal{position:fixed;inset:0;z-index:1500;display:none;place-items:start center;padding-top:16vh;background:rgba(0,0,0,.55);backdrop-filter:blur(6px)}
+#pal.open{display:grid}
+#pal .box{width:min(560px,92vw);border-radius:16px;overflow:hidden;background:#101014;border:1px solid rgba(255,255,255,.14);box-shadow:0 40px 120px rgba(0,0,0,.6)}
+#pal input{width:100%;background:none;border:0;outline:0;color:#fff;font-family:var(--mono);font-size:15px;padding:18px 20px;border-bottom:1px solid rgba(255,255,255,.1)}
+#pal .opts{max-height:300px;overflow:auto}
+#pal .opt{padding:13px 20px;font-size:14px;color:#cfcfda;display:flex;justify-content:space-between;cursor:pointer;font-family:var(--mono);font-size:13px}
+#pal .opt.sel,#pal .opt:hover{background:rgba(200,255,46,.12);color:#fff}
+.browser{border-radius:14px;overflow:hidden;border:1px solid var(--line);position:relative;min-height:260px;background:#0b0b10;color:#eee}
+.browser.light{background:#f6f3ec;color:#141416}
+.browser .tb{height:30px;display:flex;align-items:center;gap:6px;padding:0 12px;border-bottom:1px solid rgba(128,128,128,.25)}
+.browser .tb i{width:10px;height:10px;border-radius:50%;background:#ff5f57}.browser .tb i:nth-child(2){background:#febc2e}.browser .tb i:nth-child(3){background:#28c840}
+.browser .pg{padding:22px;display:grid;gap:10px}
+.browser .pg .l{height:12px;border-radius:6px;background:currentColor;opacity:.14}
+.browser .pg h5{font-size:26px;letter-spacing:-.03em}
+#themeWipe{position:absolute;inset:0;pointer-events:none;background:#f6f3ec;clip-path:circle(0 at 85% 20%)}
+/* content + scripts */
+.imp{border:1px solid var(--line);border-radius:22px;overflow:hidden}
+.imp .row{display:grid;grid-template-columns:1fr 1fr}
+.imp .row>div{padding:18px 22px;border-bottom:1px solid var(--line);font-size:14.5px;color:var(--dim);line-height:1.6}
+.imp .row>div:last-child{color:var(--ink)}
+.imp .head>div{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;background:color-mix(in srgb,var(--ink) 4%,transparent);color:var(--dim)}
+.imp .row:last-child>div{border-bottom:0}
+@media(max-width:720px){.imp .row{grid-template-columns:1fr}.imp .row>div:first-child{border-bottom:0;padding-bottom:0}}
+.term{border-radius:18px;border:1px solid var(--line);background:#07080c;color:#cfd3df;overflow:hidden;font-family:var(--mono);font-size:13px;margin-top:22px}
+.term .tb{display:flex;gap:6px;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.1);align-items:center}
+.term .tb i{width:10px;height:10px;border-radius:50%;background:#333}
+.term .tb .tt{display:flex;gap:4px;margin-left:14px}
+.term .tb button{background:none;border:0;color:#8a90a3;font-family:var(--mono);font-size:11px;padding:6px 10px;border-radius:6px;cursor:pointer;text-transform:uppercase;letter-spacing:.08em}
+.term .tb button.on{background:rgba(255,255,255,.1);color:#fff}
+.term pre{padding:22px;min-height:190px;white-space:pre-wrap;line-height:1.8}
+.term .p{color:var(--lime)} .term .c{color:#59607a}
+.term .caret{display:inline-block;width:8px;height:15px;background:var(--lime);vertical-align:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+/* numbers */
+.nums{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:40px}
+@media(max-width:900px){.nums{grid-template-columns:repeat(2,1fr)}}
+.num{border-top:1px solid var(--line);padding-top:18px}
+.num b{font-size:clamp(34px,4.6vw,64px);letter-spacing:-.05em;line-height:1;display:block}
+.num span{color:var(--dim);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+/* resume */
+.res-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:22px}
+@media(max-width:900px){.res-grid{grid-template-columns:1fr}}
+.tl{position:relative;margin-top:10px}
+.tl-item{border-left:2px solid var(--line);padding:0 0 30px 26px;position:relative}
+.tl-item:before{content:"";position:absolute;left:-7px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--lime)}
+.tl-item time{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.1em}
+.tl-item b{display:block;font-size:20px;margin:6px 0;letter-spacing:-.02em}
+.tl-item p{color:var(--dim);font-size:15px;line-height:1.6}
+.stacks{display:flex;flex-direction:column;gap:14px}
+.stack{border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.stack small{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.stack p{margin-top:8px;font-size:14.5px;line-height:1.6}
+/* footer */
+footer{padding:130px 0 36px;position:relative;overflow:hidden}
+footer .cta{font-size:clamp(52px,11vw,180px);line-height:.86;letter-spacing:-.06em;font-weight:700}
+footer .cta a{text-decoration:none}
+footer .bottom{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:90px;padding-top:22px;border-top:1px solid var(--line);font-family:var(--mono);font-size:12px;color:var(--dim)}
+footer .bottom a{text-decoration:none} footer .bottom a:hover{color:var(--ink)}
+.magnet{display:inline-block}
+#bigbg{position:absolute;inset:auto 0 -4% 0;text-align:center;font-size:22vw;font-weight:700;letter-spacing:-.06em;line-height:1;opacity:.045;pointer-events:none;white-space:nowrap}
+.reveal{opacity:0;transform:translateY(36px)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="cur"></div><div class="cur-dot"></div><div id="trail"></div>
+<div id="loader"><div class="bar"></div><div class="px" id="loaderPx"></div><div class="n mono"><span id="ln">000</span></div><div class="lbl">Rendering every frame from time —<br>nothing is a canned animation.</div></div>
+<div id="progress"></div>
+<nav>
+  <a class="logo" href="#hero"><b>q</b>quietfolio</a>
+  <ul>
+    <li><a href="#film">Film</a></li>
+    <li><a href="#craft">Craft</a></li>
+    <li><a href="#inside">Inside</a></li>
+    <li><a href="#proof">Proof</a></li>
+    <li><a href="#ship">Ship</a></li>
+    <li><a href="#resume">Résumé</a></li>
+  </ul>
+  <a class="logo mono" style="font-size:12px;font-weight:400;letter-spacing:.12em" href="https://github.com/salahu01/quietfolio">GITHUB ↗</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="field"></canvas>
+  <div class="veil"></div>
+  <div class="content wrap">
+    <div class="kicker hero-in">A motion-design résumé · Next.js · MIT · live demo below</div>
+    <h1 class="title" aria-label="quietfolio"><span id="htitle">quietfolio</span></h1>
+    <p class="hero-sub hero-in">A minimal, fast, accessible, SEO-first developer portfolio — <span class="serif" style="font-size:1.12em">and the 23.5-second film that launches it,</span> rendered frame-by-frame from code.</p>
+    <div class="hero-row hero-in">
+      <a class="btn solid magnet" href="#film">Watch the film <span class="arr">→</span></a>
+      <a class="btn magnet" href="https://salahu01.github.io/quietfolio/">Open the template <span class="arr">↗</span></a>
+      <button class="btn magnet" id="themeBtn">Toggle theme ◐</button>
+    </div>
+    <div class="hero-hud hero-in">
+      <div>FIELD <b class="ok">PROCEDURAL · 60 FPS</b></div>
+      <div>FRAMES IN FLIGHT <b>1</b></div>
+      <div>BUILD <b>STATIC · 0 SERVERS</b></div>
+      <div>T <b id="hudT">00:00.000</b></div>
+      <div>FPS <b id="hudF">—</b></div>
+    </div>
+  </div>
+  <div class="scrollhint">Scroll<i></i></div>
+</section>
+
+<div class="marquee"><div class="track" id="mq">
+  <div class="it"><b>23.5s</b><span>launch showreel</span></div><div class="it"><em>✦</em></div>
+  <div class="it"><b>100</b><span>Lighthouse · all four</span></div><div class="it"><em>✦</em></div>
+  <div class="it"><b>0</b><span>backend · fully static</span></div><div class="it"><em>✦</em></div>
+  <div class="it"><b>−14 LUFS</b><span>synthesized soundtrack</span></div><div class="it"><em>✦</em></div>
+  <div class="it"><b>120 BPM</b><span>synced SFX</span></div><div class="it"><em>✦</em></div>
+  <div class="it"><b>1080×1350</b><span>4:5 master</span></div><div class="it"><em>✦</em></div>
+  <div class="it"><b>⌘K</b><span>command palette</span></div><div class="it"><em>✦</em></div>
+  <div class="it"><b>MIT</b><span>template + film</span></div><div class="it"><em>✦</em></div>
+</div></div>
+
+<!-- FILM -->
+<section id="film" class="sec">
+  <div class="wrap">
+    <div class="sec-h"><div class="idx">01 / THE FILM</div><div><h2 class="split">Every frame is <span class="grad">a function of time.</span></h2>
+    <p>The launch showreel isn't edited — it's <b>computed</b>. <b>scene.html</b> exposes <b>render(t)</b>: HUD, pixel wipes, kinetic type, 3D browser/phone compositions, rings, cursor trail, reticle. No CSS animations, no wall-clock — headless Chrome draws each frame, ffmpeg stitches it, Python synthesizes the score. Scrub it with the chapters.</p></div></div>
+    <div class="reel-grid">
+      <div class="player reveal">
+        <video id="reel" src="media/reel.mp4" poster="media/poster.png" controls playsinline preload="metadata"></video>
+        <div class="cap"><i></i><span id="reelCap">SHOWREEL · 23.5s · 1080×1350</span></div>
+      </div>
+      <div class="chapters reveal" id="chapters">
+        <div class="chap on" data-t="1.2"><div class="t">0.0 – 3.0s · TITLE</div><h4>Letters drop in.</h4><p>Title glyphs fall with brackets closing in — the focus reticle locks on.</p></div>
+        <div class="chap" data-t="4.2"><div class="t">3.0 – 5.9s · MANIFESTO</div><h4>minimal. fast. open source.</h4><p>Kinetic type over the pixel cursor trail. Three words, the whole thesis.</p></div>
+        <div class="chap" data-t="8.0"><div class="t">5.9 – 10.9s · LIVE SITE</div><h4>A real browser, fanned out.</h4><p>Frame-by-frame footage of the production build: nav hunt, projects, case study, blog.</p></div>
+        <div class="chap" data-t="12.4"><div class="t">10.9 – 13.9s · THEME REVEAL</div><h4>One click, circular light.</h4><p>A real theme-toggle click with a circular light reveal. Try it live below.</p></div>
+        <div class="chap" data-t="15.6"><div class="t">13.9 – 17.4s · PROOF</div><h4>Lighthouse 100 rings + ⌘K.</h4><p>Rings draw to one hundred while a live ⌘K search runs. Press ⌘K on this page.</p></div>
+        <div class="chap" data-t="18.6"><div class="t">17.4 – 19.9s · MOBILE</div><h4>Three phones, live scrolls.</h4><p>Real mobile captures scroll inside 3D phone compositions.</p></div>
+        <div class="chap" data-t="21.6"><div class="t">19.9 – 23.5s · END CARD</div><h4>URL typewriter, lock-on.</h4><p>Brackets lock, the URL types itself. Poster frame doubles as the LinkedIn thumbnail.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CRAFT (horizontal) -->
+<section id="craft">
+  <div class="hwrap"><div class="htrack" id="htrack">
+    <div class="dintro"><div class="kicker">02 / THE CRAFT</div><h2 style="margin-top:18px">Motion is<br><span class="serif grad">the résumé.</span></h2><p>Five techniques from the film, running live in your browser right now. Scroll to travel through them.</p></div>
+    <article class="dcard"><div class="num">01 — FRAME-EXACT RENDER</div><h3>render(t), not play().</h3><p>Every visual is a pure function of the timestamp. Scrub to any second and you get the identical pixels — that's what makes headless rendering deterministic.</p><div class="viz"><canvas id="vizWave"></canvas></div></article>
+    <article class="dcard"><div class="num">02 — LIVE FOOTAGE, SCRIPTED</div><h3>Clicks performed by robots.</h3><p>Site footage is recorded frame-by-frame with scripted scroll, clicks and typing, then swapped in per-frame. The theme click in the film is a real event.</p><div class="viz"><canvas id="vizCursor"></canvas></div></article>
+    <article class="dcard"><div class="num">03 — SYNTHESIZED SCORE</div><h3>120 BPM, −14 LUFS, zero samples.</h3><p><code>scripts/sound.py</code> synthesizes music + SFX on scene event times with numpy/scipy. No stock audio, nothing licensed.</p><div class="viz"><canvas id="vizAudio"></canvas></div></article>
+    <article class="dcard"><div class="num">04 — PIXEL WIPES & RETICLE</div><h3>Transitions with a grid.</h3><p>Scene changes wipe through a pixel lattice while the focus reticle tracks the subject — the same cursor FX that ships in the template itself.</p><div class="viz"><canvas id="vizPixels"></canvas></div></article>
+    <article class="dcard"><div class="num">05 — POSTER AS A PROGRAM</div><h3>thumb.html → PNG. cover.html → PNG.</h3><p>The LinkedIn thumbnail (4:5) and repo cover (16:9) are static layouts rendered to PNG by the same pipeline — one command builds everything.</p><div class="viz"><img src="media/cover.png" alt="quietfolio cover" style="width:100%;border-radius:10px;display:block"><div style="display:flex;gap:10px;margin-top:10px;align-items:center"><img src="media/poster.png" alt="thumbnail" style="width:64px;border-radius:8px"><span class="mono" style="font-size:11px;color:var(--dim)">npm run build → video · sound · mux · linkedin · thumbnail · cover</span></div></div></article>
+  </div></div>
+</section>
+
+<!-- INSIDE -->
+<section id="inside" class="sec">
+  <div class="wrap">
+    <div class="sec-h"><div class="idx">03 / INSIDE QUIETFOLIO</div><div><h2 class="split">One page home.<br><span class="grad">Case studies. Blog. Résumé.</span></h2>
+    <p>Built with <b>Next.js App Router + Tailwind v4 + Framer Motion</b>. Fully static, no backend. Single-page home (about, filterable projects, experience, tech stack, GitHub activity) plus <b>/work/[slug]</b>, <b>/blog</b> and a printable <b>/resume</b> that regenerates its own PDF.</p></div></div>
+    <div class="feats">
+      <div class="feat reveal"><div class="ico">◫</div><h4>Projects with filters</h4><p>Web / Mobile / Desktop / Tooling filters, featured flags, LIVE / WIP / PRIVATE status, tags, live + repo links, optional case-study path. Try the live port below.</p><span class="tag">lib/data.ts → home</span></div>
+      <div class="feat reveal"><div class="ico">❐</div><h4>Case studies</h4><p>Three sample studies in content/work.json — Northwind Dashboard, Pocket Budget, Plainfile CLI — rendered from the same block system as the blog.</p><span class="tag">/work/[slug]</span></div>
+      <div class="feat reveal"><div class="ico">✎</div><h4>Blog that validates</h4><p>Three sample posts. npm run validate catches broken links, missing images and duplicate slugs before you ever deploy.</p><span class="tag">content/blog.json</span></div>
+      <div class="feat reveal"><div class="ico">⌘</div><h4>⌘K command palette</h4><p>Fuzzy search over routes, projects and posts. Keyboard-operable, escapable. Press ⌘K / Ctrl+K on this page to feel the port.</p><span class="tag">keyboard-first</span></div>
+      <div class="feat reveal"><div class="ico">◐</div><h4>Theme with no flash</h4><p>Dark / light with zero flash-of-wrong-theme, honor for prefers-reduced-motion (static banner, no cursor FX). Toggle it in the hero.</p><span class="tag">no-flash script</span></div>
+      <div class="feat reveal"><div class="ico">▦</div><h4>Pixel-art banner + cursor</h4><p>Animated pixel banner from scripts/make_banner.py, pixel cursor trail + focus reticle in components. The film and the site share one visual language.</p><span class="tag">signature look</span></div>
+    </div>
+    <div class="fdemo reveal">
+      <div class="bar"><span class="mono" style="font-size:11px;color:var(--dim);letter-spacing:.14em">LIVE PORT — THE HOME FILTERS</span><span style="flex:1"></span>
+        <button class="chip on" data-f="All">All</button><button class="chip" data-f="Web">Web</button><button class="chip" data-f="Mobile">Mobile</button><button class="chip" data-f="Desktop">Desktop</button><button class="chip" data-f="Tooling">Tooling</button>
+      </div>
+      <div class="fgrid" id="fgrid">
+        <div class="fcard" data-c="Web"><div class="sw" style="background:linear-gradient(135deg,#8b7bff,#5ef2c4)"></div><div class="bd"><b>Northwind Dashboard</b><span>Web · 2026 · LIVE</span></div></div>
+        <div class="fcard" data-c="Mobile"><div class="sw" style="background:linear-gradient(135deg,#ff5c38,#ffb04c)"></div><div class="bd"><b>Pocket Budget</b><span>Mobile · 2025 · LIVE</span></div></div>
+        <div class="fcard" data-c="Tooling"><div class="sw" style="background:linear-gradient(135deg,#c8ff2e,#5ef2c4)"></div><div class="bd"><b>Plainfile CLI</b><span>Tooling · 2025 · LIVE</span></div></div>
+        <div class="fcard" data-c="Desktop"><div class="sw" style="background:linear-gradient(135deg,#ff4d8d,#8b7bff)"></div><div class="bd"><b>Orbit Notes</b><span>Desktop · 2026 · WIP</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF -->
+<section id="proof" class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-h"><div class="idx">04 / MEASURED, NOT CLAIMED</div><div><h2 class="split">Pixels are free.<br><span class="grad">Proof is expensive.</span></h2>
+    <p>The template's promise is numbers: <b>Lighthouse 100s</b>, zero third-party scripts, strict CSP, AA contrast, full keyboard operation. The showcase demos two of its signature interactions live.</p></div></div>
+    <div class="rings reveal" id="rings">
+      <div class="ring"><svg viewBox="0 0 130 130"><circle class="bgc" cx="65" cy="65" r="60"/><circle class="fgc" cx="65" cy="65" r="60" data-v="100"/></svg><b class="count" data-to="100">0</b><span>Performance</span></div>
+      <div class="ring"><svg viewBox="0 0 130 130"><circle class="bgc" cx="65" cy="65" r="60"/><circle class="fgc" cx="65" cy="65" r="60" data-v="100"/></svg><b class="count" data-to="100">0</b><span>Accessibility</span></div>
+      <div class="ring"><svg viewBox="0 0 130 130"><circle class="bgc" cx="65" cy="65" r="60"/><circle class="fgc" cx="65" cy="65" r="60" data-v="100"/></svg><b class="count" data-to="100">0</b><span>Best practices</span></div>
+      <div class="ring"><svg viewBox="0 0 130 130"><circle class="bgc" cx="65" cy="65" r="60"/><circle class="fgc" cx="65" cy="65" r="60" data-v="100"/></svg><b class="count" data-to="100">0</b><span>SEO</span></div>
+    </div>
+    <div class="seo-grid" style="margin-top:22px">
+      <div class="jl reveal"><header><span>JSON-LD PER PAGE</span><span>lib/seo.ts</span></header><pre><span class="k">Person</span> · <span class="k">WebSite</span> · <span class="k">ProfilePage</span>
+<span class="k">TechArticle</span> · <span class="k">BlogPosting</span> · <span class="k">Blog</span>
+<span class="k">BreadcrumbList</span> — escaped, per route.
+OG + Twitter cards <span class="s">per post</span> (generated images),
+canonical URLs, <span class="s">sitemap.xml</span>, <span class="s">robots.txt</span>,
+RSS <span class="s">/feed.xml</span>, <span class="s">llms.txt</span> + <span class="s">llms-full.txt</span>,
+<span class="s">security.txt</span>, web manifest.</pre></div>
+      <div class="jl reveal"><header><span>HARDENED BY DEFAULT</span><span>next.config.ts</span></header><pre>Security headers + <span class="s">strict CSP</span> in production,
+<span class="s">no third-party scripts</span>, X-Powered-By removed.
+<span class="k">a11y:</span> skip link, landmarks, AA contrast,
+visible focus, keyboard palette + filters.
+CI runs <span class="s">lint → typecheck → validate → build</span>.</pre></div>
+    </div>
+    <div class="pills reveal"><span class="pill"><b>sitemap.xml</b> ✓</span><span class="pill"><b>robots.txt</b> ✓</span><span class="pill"><b>feed.xml</b> ✓</span><span class="pill"><b>llms.txt</b> ✓</span><span class="pill"><b>security.txt</b> ✓</span><span class="pill"><b>manifest</b> ✓</span><span class="pill"><b>Rich Results tested</b> ✓</span></div>
+    <div class="duo">
+      <div class="mock reveal"><header><b>⌘K palette</b><button class="kbtn" id="palBtn">Press ⌘K</button></header><div class="stage"><p style="color:var(--dim);font-size:15px;line-height:1.6">The template's command palette searches routes, projects and posts. This page ships a working miniature — trigger it with the button or <span class="mono">⌘K / Ctrl+K</span>, type to filter, <span class="mono">↵</span> to jump.</p><p class="mono" style="margin-top:14px;font-size:12px;color:var(--dim)">routes indexed: / · /work/* · /blog · /resume</p></div></div>
+      <div class="mock reveal"><header><b>Theme toggle, circular reveal</b><button class="kbtn" id="demoTheme">Click: toggle</button></header><div class="stage"><div class="browser" id="demoBrowser"><div id="themeWipe"></div><div class="tb"><i></i><i></i><i></i></div><div class="pg"><h5 id="demoTitle">The film's 12-second moment.</h5><div class="l" style="width:92%"></div><div class="l" style="width:70%"></div><div class="l" style="width:82%"></div><p class="mono" style="font-size:11px;opacity:.6">A real click → circular light reveal. No flash, ever.</p></div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTENT + SHIP -->
+<section id="ship" class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-h"><div class="idx">05 / CONTENT → SHIP</div><div><h2 class="split">Write JSON.<br><span class="grad">Get a site, a feed, a résumé.</span></h2>
+    <p>Blocks are <b>h2 h3 p ul ol quote code img table</b>, inline <b>**bold** *italic* `code` [links]</b>. One validator, one checklist, three deploy targets.</p></div></div>
+    <div class="imp reveal">
+      <div class="row head"><div>Source of truth</div><div>What it becomes</div></div>
+      <div class="row"><div><code>lib/data.ts</code> — name, role, bio, links, projects, experience, stack</div><div>Home page + <code>/resume</code> printable page → <code>public/resume.pdf</code> via <code>npm run resume</code></div></div>
+      <div class="row"><div><code>content/work.json</code> — 3 case studies with slug, title, date, blocks</div><div><code>/work/[slug]</code> pages with BreadcrumbList + TechArticle JSON-LD</div></div>
+      <div class="row"><div><code>content/blog.json</code> — 3 posts, same block format</div><div><code>/blog</code> + per-post OG images + RSS <code>/feed.xml</code></div></div>
+      <div class="row"><div><code>public/img/</code> — avatar + 4 project covers (web-sized JPEGs)</div><div>Regenerable: <code>make_sample_assets.py</code> · <code>make_banner.py</code> · <code>make_brand_assets.py "Name" "Role" "domain"</code></div></div>
+    </div>
+    <div class="term reveal">
+      <div class="tb"><i></i><i></i><i></i><div class="tt" id="ttabs"></div></div>
+      <pre id="tout"></pre>
+    </div>
+    <div class="nums">
+      <div class="num reveal"><b class="count" data-to="23.5" data-dec="1">0</b><span>seconds of film</span></div>
+      <div class="num reveal"><b class="count" data-to="120">0</b><span>BPM synthesized score</span></div>
+      <div class="num reveal"><b class="count" data-to="10" data-prefix="&lt;">0</b><span>MB LinkedIn upload copy</span></div>
+      <div class="num reveal"><b class="count" data-to="0">0</b><span>servers · static export</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- RESUME -->
+<section id="resume" class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-h"><div class="idx">06 / THE HUMAN</div><div><h2 class="split">Made by a human.<br><span class="grad">Forked by everyone.</span></h2>
+    <p><b>Muhammed Swalahudheen C V</b> — the template ships with neutral sample content (Alex Morgan) so your fork starts clean. Click <b>Use this template</b>, run the checklist, deploy. MIT, forever.</p></div></div>
+    <div class="res-grid">
+      <div class="reveal"><div class="mono" style="font-size:11px;letter-spacing:.16em;color:var(--dim)">SAMPLE TIMELINE (REPLACE WITH YOURS)</div>
+        <div class="tl">
+          <div class="tl-item"><time>2023 — PRESENT</time><b>Senior Full Stack Developer · Acme Corp</b><p>Lead a small team building customer-facing web products — architecture, APIs, CI/CD, performance budgets.</p></div>
+          <div class="tl-item"><time>2020 — 2023</time><b>Full Stack Developer · Globex</b><p>Shipped internal tools and a public dashboard used by thousands every week.</p></div>
+        </div>
+        <div class="hero-row"><a class="btn solid magnet" href="https://github.com/salahu01/quietfolio">Use this template <span class="arr">↗</span></a><a class="btn magnet" href="https://salahu01.github.io/quietfolio/resume">Sample /resume <span class="arr">↗</span></a></div>
+      </div>
+      <div class="stacks reveal">
+        <div class="stack"><small>Languages</small><p>TypeScript · JavaScript · Python · SQL</p></div>
+        <div class="stack"><small>Frontend</small><p>React · Next.js · Tailwind CSS · Framer Motion</p></div>
+        <div class="stack"><small>Backend</small><p>Node.js · PostgreSQL · Redis · GraphQL · REST</p></div>
+        <div class="stack"><small>DevOps & Cloud</small><p>Docker · GitHub Actions · Vercel · Netlify · GitHub Pages</p></div>
+        <div class="stack"><small>Also by the author</small><p><a href="https://salahu01.github.io/Globber/">Globber</a> — pattern-matching call blocker · <a href="https://salahu01.github.io/livewall/">LiveWall</a> — wallpaper that costs nothing when unseen</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div id="bigbg">quietfolio</div>
+  <div class="wrap">
+    <div class="kicker">Open source · MIT · template + film</div>
+    <div class="cta" style="margin-top:22px"><a href="https://github.com/salahu01/quietfolio">Star it on<br><span class="grad">GitHub ↗</span></a></div>
+    <div class="bottom">
+      <span>quietfolio showcase — © salahu01 · MIT</span>
+      <span><a href="https://salahu01.github.io/quietfolio/">Demo</a> · <a href="https://github.com/salahu01/quietfolio">Source</a> · <a href="https://github.com/salahu01/quietfolio/issues">Issues</a> · <a href="https://salahu01.github.io">salahu01.github.io</a></span>
+    </div>
+  </div>
+</footer>
+
+<div id="pal"><div class="box"><input id="palIn" placeholder="Type a route, project, post…" autocomplete="off"><div class="opts" id="palOpts"></div></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(()=>{
+"use strict";
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const hasGsap=typeof gsap!=="undefined";
+if(hasGsap&&typeof ScrollTrigger!=="undefined")gsap.registerPlugin(ScrollTrigger);
+
+/* ---------- loader ---------- */
+const pxBox=$('#loaderPx');for(let i=0;i<24*14;i++){pxBox.appendChild(document.createElement('i'));}
+const px=pxBox.children, lo={v:0};
+function finishLoad(){
+  const tl=hasGsap?gsap.timeline():null;
+  if(!tl){$('#loader').style.display='none';return;}
+  tl.to('#loader .px i',{opacity:(i)=>((i*7)%13<3?0.9:0),duration:.05,stagger:{each:.0012,from:"random"}})
+    .to('#loader',{yPercent:-100,duration:.9,ease:'expo.inOut'})
+    .from('#htitle .ch',{yPercent:115,rotate:6,opacity:0,stagger:.045,duration:1,ease:'expo.out'},'-=.45')
+    .from('.hero-in',{y:28,opacity:0,stagger:.1,duration:.8,ease:'power3.out'},'-=.75')
+    .set('#loader',{display:'none'});
+  if(window.ScrollTrigger)ScrollTrigger.refresh();
+}
+(function load(){ // never trap the visitor: rAF counter + hard backstop
+  let done=false;const end=()=>{if(!done){done=true;finishLoad();}};
+  const t0=performance.now(),DUR=RM?200:1500;
+  (function tick(now){const p=Math.min(1,((now||performance.now())-t0)/DUR);
+    $('#ln').textContent=String(Math.round(p*100)).padStart(3,'0');
+    $('#loader .bar').style.width=(p*100)+'%';
+    if(p<1&&!done)requestAnimationFrame(tick);else end();})(t0);
+  setTimeout(end,DUR+4000);
+})();
+
+/* ---------- title split ---------- */
+const ht=$('#htitle'),txt=ht.textContent;ht.innerHTML=[...txt].map((c,i)=>`<span class="ch">${c}</span>`).join('');
+
+/* ---------- cursor + pixel trail ---------- */
+const cur=$('.cur'),dot=$('.cur-dot'),trail=$('#trail');
+let mx=innerWidth/2,my=innerHeight/2,cx=mx,cy=my,lastPx=0;
+addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY;dot.style.transform=`translate(${mx}px,${my}px)`;
+  const now=performance.now();
+  if(!RM&&now-lastPx>34){lastPx=now;const p=document.createElement('i');const s=4+Math.random()*8;
+    p.style.cssText=`left:${mx-4}px;top:${my-4}px;width:${s}px;height:${s}px;opacity:.95`;trail.appendChild(p);
+    let life=1;const fall=setInterval(()=>{life-=.09;p.style.opacity=life;p.style.transform=`translate(${(Math.random()-.5)*30}px,${(Math.random()-.2)*36}px) scale(${life})`;if(life<=0){clearInterval(fall);p.remove();}},40);
+    while(trail.children.length>60)trail.firstChild.remove();}
+});
+(function loop(){cx+=(mx-cx)*.18;cy+=(my-cy)*.18;cur.style.transform=`translate(${cx}px,${cy}px)`;requestAnimationFrame(loop)})();
+$$('a,button,.chap,.chip,.fcard').forEach(el=>{el.addEventListener('pointerenter',()=>cur.classList.add('big'));el.addEventListener('pointerleave',()=>cur.classList.remove('big'))});
+$$('.magnet').forEach(b=>{b.addEventListener('pointermove',e=>{if(!hasGsap)return;const r=b.getBoundingClientRect();gsap.to(b,{x:(e.clientX-r.left-r.width/2)*.3,y:(e.clientY-r.top-r.height/2)*.4,duration:.4})});b.addEventListener('pointerleave',()=>{if(hasGsap)gsap.to(b,{x:0,y:0,duration:.7,ease:'elastic.out(1,.4)'})})});
+
+/* ---------- hero pixel field ---------- */
+const cv=$('#field'),ctx=cv.getContext('2d');
+let W,H,cols,rows,cell=26,dots=[],t0=performance.now(),frames=0,fpsT=performance.now();
+function sizeField(){const d=Math.min(devicePixelRatio||1,1.5);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*d;cv.height=H*d;ctx.setTransform(d,0,0,d,0,0);
+  cols=Math.ceil(W/cell)+1;rows=Math.ceil(H/cell)+1;dots=[];
+  for(let y=0;y<rows;y++)for(let x=0;x<cols;x++)dots.push({x:x*cell,y:y*cell,s:Math.random()*Math.PI*2});}
+sizeField();addEventListener('resize',sizeField);
+let fieldOn=true;
+new IntersectionObserver(es=>{fieldOn=es[0].isIntersecting}).observe($('#hero'));
+function drawField(now){
+  requestAnimationFrame(drawField);
+  if(!fieldOn)return;
+  const t=(now-t0)/1000;
+  ctx.clearRect(0,0,W,H);
+  const dark=document.documentElement.dataset.theme!=="light";
+  for(const d of dots){
+    const dx=d.x-mx,dy=(d.y+H*0)- (my+scrollY-$('#hero').offsetTop+H*0);
+    const dist=Math.hypot(d.x-mx,d.y-(my-(scrollY>0?0:0))-($('#hero').getBoundingClientRect().top*-1+0)*0 - 0);
+    const w=Math.sin(d.s+t*1.4)*.5+.5;
+    const m=Math.max(0,1-Math.hypot(d.x-mx,d.y-(my-$('#hero').getBoundingClientRect().top))/340);
+    const a=.12+w*.3+m*.75;
+    const sz=1.5+w*2.4+m*4;
+    ctx.fillStyle=dark?(m>.35?`rgba(200,255,46,${a})`:`rgba(150,150,180,${a*.8})`):(m>.35?`rgba(90,120,0,${a})`:`rgba(60,60,80,${a*.7})`);
+    ctx.fillRect(d.x+Math.sin(t+d.s)*3,d.y+Math.cos(t*.8+d.s)*3,sz,sz);
+  }
+  frames++;const el=now-fpsT;
+  if(el>500){$('#hudF').textContent=Math.round(frames*1000/el);frames=0;fpsT=now;
+    const s=t,mm=String(Math.floor(s/60)).padStart(2,'0'),ss=(s%60).toFixed(3).padStart(6,'0');$('#hudT').textContent=`${mm}:${ss}`;}
+}
+requestAnimationFrame(drawField);
+
+/* ---------- marquee duplicate ---------- */
+const mq=$('#mq');mq.innerHTML+=mq.innerHTML;
+
+/* ---------- progress ---------- */
+addEventListener('scroll',()=>{const h=document.documentElement;$('#progress').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';},{passive:true});
+
+/* ---------- reveals ---------- */
+if(hasGsap&&typeof ScrollTrigger!=="undefined"&&!RM){
+  $$('.reveal').forEach(el=>{gsap.fromTo(el,{opacity:0,y:36},{opacity:1,y:0,duration:.9,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 88%'}})});
+  $$('.split').forEach(el=>{gsap.from(el,{yPercent:30,opacity:0,duration:1,ease:'expo.out',scrollTrigger:{trigger:el,start:'top 86%'}})});
+  const track=$('#htrack');
+  const getX=()=>-(track.scrollWidth-innerWidth+parseFloat(getComputedStyle(track).paddingLeft)*0);
+  if(innerWidth>820){gsap.to(track,{x:getX,ease:'none',scrollTrigger:{trigger:'#craft',start:'top top',end:()=>'+='+(track.scrollWidth-innerWidth+200),scrub:1,pin:true,anticipatePin:1,invalidateOnRefresh:true}});}
+}else{$$('.reveal').forEach(el=>{el.style.opacity=1;el.style.transform='none'})}
+
+/* ---------- chapters scrub ---------- */
+const reel=$('#reel');
+$$('#chapters .chap').forEach(c=>c.addEventListener('click',()=>{
+  $$('#chapters .chap').forEach(x=>x.classList.remove('on'));c.classList.add('on');
+  try{reel.currentTime=parseFloat(c.dataset.t);reel.play();}catch(e){}
+  $('#reelCap').textContent='SHOWREEL · @ '+c.dataset.t+'s · '+c.querySelector('h4').textContent.toUpperCase();
+}));
+
+/* ---------- craft viz canvases ---------- */
+function fit(c){const r=c.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);c.width=r.width*d;c.height=r.height*d;const x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);return[x,r.width,r.height];}
+function anim(id,fn){const c=$(id);if(!c)return;let[X,w,h]=fit(c);addEventListener('resize',()=>{[X,w,h]=fit(c)});let s=Math.random()*10;(function f(){requestAnimationFrame(f);const r=c.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;s+=.016;fn(X,w,h,s);});}
+anim('#vizWave',(X,w,h,s)=>{X.clearRect(0,0,w,h);X.strokeStyle='#c8ff2e';X.lineWidth=2;X.beginPath();for(let x=0;x<=w;x+=4){const y=h/2+Math.sin(x*.05+s*2)*22*Math.sin(x*.01+s)+Math.sin(x*.11+s*3)*6;x?X.lineTo(x,y):X.moveTo(x,y);}X.stroke();
+  X.fillStyle='rgba(139,123,255,.5)';for(let x=0;x<w;x+=14){const y=h/2+Math.sin(x*.05+s*2)*22*Math.sin(x*.01+s);X.fillRect(x,y-((x*7+s*120)%(h*.5)),3,10);}});
+anim('#vizCursor',(X,w,h,s)=>{X.clearRect(0,0,w,h);const x=w/2+Math.sin(s)*w*.3,y=h/2+Math.cos(s*1.3)*h*.28;
+  X.strokeStyle='rgba(200,255,46,.9)';X.lineWidth=1.5;X.strokeRect(x-46,y-30,92,60);X.beginPath();X.moveTo(x-46,y-38);X.lineTo(x-46,y-30);X.moveTo(x+46,y-38);X.lineTo(x+46,y-30);X.stroke();
+  X.fillStyle='#c8ff2e';for(let i=0;i<14;i++){X.globalAlpha=1-i/14;X.fillRect(x-s*40+i*9,y+((i*37)%40)-20,5,5);}X.globalAlpha=1;
+  X.strokeStyle='#fff';X.beginPath();X.arc(x,y,10+Math.sin(s*4)*2,0,7);X.stroke();});
+anim('#vizAudio',(X,w,h,s)=>{X.clearRect(0,0,w,h);const n=48,bw=w/n;for(let i=0;i<n;i++){const v=(Math.sin(i*.7+s*4)*.5+.5)*(Math.sin(i*.23-s*2)*.5+.5);const bh=8+v*(h-30);X.fillStyle=i%4?'#8b7bff':'#c8ff2e';X.fillRect(i*bw+2,h-bh,bw-4,bh);}X.fillStyle='rgba(255,255,255,.7)';X.font='11px JetBrains Mono';X.fillText('120 BPM · −14 LUFS · 0 SAMPLES',10,16);});
+anim('#vizPixels',(X,w,h,s)=>{X.clearRect(0,0,w,h);const n=12,cw=w/n,ch=h/8,wipe=(s%3)/3;for(let gy=0;gy<8;gy++)for(let gx=0;gx<n;gx++){const on=gx/n<wipe;X.fillStyle=on?'#c8ff2e':'rgba(140,140,160,.18)';X.fillRect(gx*cw+2,gy*ch+2,cw-4,ch-4);}});
+
+/* ---------- counters + rings ---------- */
+function count(el){const to=parseFloat(el.dataset.to),dec=parseInt(el.dataset.dec||0),pre=el.dataset.prefix||'',suf=el.dataset.suf||'';
+  const o={v:0};const step=()=>{o.v+=(to-o.v)*.08;if(Math.abs(to-o.v)<.05)o.v=to;el.textContent=pre+o.v.toFixed(dec)+suf;if(o.v!==to)requestAnimationFrame(step);};step();}
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){count(e.target);io.unobserve(e.target);}}),{threshold:.4});
+$$('.count').forEach(el=>io.observe(el));
+const rio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){
+  $$('#rings .fgc').forEach((c,i)=>{const C=2*Math.PI*60;setTimeout(()=>{c.style.transition='stroke-dashoffset 1.6s cubic-bezier(.2,.8,.2,1)';c.style.strokeDashoffset=C*(1-100/100);},i*180);});
+  rio.disconnect();}}),{threshold:.3});
+rio.observe($('#rings'));
+
+/* ---------- filters ---------- */
+$$('.fdemo .chip').forEach(b=>b.addEventListener('click',()=>{
+  $$('.fdemo .chip').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  const f=b.dataset.f;$$('#fgrid .fcard').forEach(c=>{c.classList.toggle('hide',f!=='All'&&c.dataset.c!==f);});
+}));
+
+/* ---------- palette ---------- */
+const routes=[['/ → home','top'],['/work/northwind-dashboard → case study','film'],['/work/pocket-budget → case study','film'],['/work/plainfile-cli → case study','ship'],['/blog/getting-started → post','ship'],['/blog/seo-setup → post','proof'],['/blog/deploying → post','ship'],['/resume → printable résumé','resume'],['Northwind Dashboard (Web)','inside'],['Pocket Budget (Mobile)','inside'],['Plainfile CLI (Tooling)','inside'],['Orbit Notes (Desktop)','inside']];
+const pal=$('#pal'),palIn=$('#palIn'),palOpts=$('#palOpts');let sel=0,items=routes;
+function renderPal(){palOpts.innerHTML=items.map((r,i)=>`<div class="opt${i===sel?' sel':''}" data-i="${i}"><span>${r[0]}</span><span>↵</span></div>`).join('')||'<div class="opt"><span>no match</span></div>';
+  $$('#palOpts .opt').forEach(o=>o.addEventListener('click',()=>goPal(parseInt(o.dataset.i||0))));}
+function openPal(){$('#pal').classList.add('open');palIn.value='';items=routes;sel=0;renderPal();setTimeout(()=>palIn.focus(),30);}
+function closePal(){$('#pal').classList.remove('open');}
+function goPal(i){const r=items[i];if(!r)return closePal();closePal();document.getElementById(r[1])?.scrollIntoView({behavior:RM?'auto':'smooth'});}
+palIn.addEventListener('input',()=>{const q=palIn.value.toLowerCase();items=routes.filter(r=>r[0].toLowerCase().includes(q));sel=0;renderPal();});
+palIn.addEventListener('keydown',e=>{if(e.key==='ArrowDown'){sel=Math.min(sel+1,items.length-1);renderPal();e.preventDefault();}if(e.key==='ArrowUp'){sel=Math.max(sel-1,0);renderPal();e.preventDefault();}if(e.key==='Enter')goPal(sel);if(e.key==='Escape')closePal();});
+pal.addEventListener('click',e=>{if(e.target===pal)closePal();});
+addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();pal.classList.contains('open')?closePal():openPal();}if(e.key==='Escape')closePal();});
+$('#palBtn').addEventListener('click',openPal);
+
+/* ---------- theme: page + demo ---------- */
+function setTheme(t){document.documentElement.dataset.theme=t;}
+$('#themeBtn').addEventListener('click',()=>{setTheme(document.documentElement.dataset.theme==='light'?'dark':'light');});
+const demoB=$('#demoBrowser'),wipe=$('#themeWipe');let light=false;
+$('#demoTheme').addEventListener('click',e=>{
+  light=!light;const r=demoB.getBoundingClientRect();
+  const x=e.clientX-r.left,y=e.clientY-r.top;
+  wipe.style.background=light?'#0b0b10':'#f6f3ec';
+  wipe.animate([{clipPath:`circle(0 at ${x}px ${y}px)`},{clipPath:`circle(${Math.hypot(r.width,r.height)}px at ${x}px ${y}px)`}],{duration:700,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'});
+  setTimeout(()=>demoB.classList.toggle('light',light),60);
+  $('#demoTitle').textContent=light?'Light. No flash, ever.':'The film\'s 12-second moment.';
+});
+
+/* ---------- terminal ---------- */
+const terms={
+  pages:{label:'Pages',body:`<span class="c"># static export → gh-pages branch</span>\n<span class="p">$</span> npm run deploy:pages\n<span class="c"># STATIC_EXPORT=1, BASE_PATH=/&lt;repo&gt;</span>\n<span class="c"># Settings → Pages → gh-pages / root</span>\n<span class="c"># → https://&lt;user&gt;.github.io/&lt;repo&gt;/</span> <span class="caret"></span>`},
+  check:{label:'Check (CI)',body:`<span class="p">$</span> npm run check\n<span class="c"># lint → typecheck → validate → build</span>\n<span class="p">$</span> npm run validate  <span class="c"># links, images, slugs</span>\n<span class="p">$</span> npm run resume    <span class="c"># rebuild resume.pdf</span> <span class="caret"></span>`},
+  film:{label:'Film',body:`<span class="p">$</span> <span class="c"># motion-graphics/quietfolio-launch</span>\nnpm install && npm run setup\nnpm run build  <span class="c"># video·sound·mux·linkedin·thumb·cover</span>\nls output/  <span class="c"># showreel + poster + cover</span> <span class="caret"></span>`},
+  mine:{label:'Make it yours',body:`<span class="p">$</span> git clone https://github.com/salahu01/quietfolio my-site\n<span class="p">$</span> nvm use && npm install && npm run dev\n<span class="c"># 1. lib/data.ts = you   2. content/*.json = writing</span>\n<span class="c"># 3. public/img/* = faces  4. NEXT_PUBLIC_SITE_URL = truth</span> <span class="caret"></span>`}};
+const tt=$('#ttabs'),to=$('#tout');
+Object.entries(terms).forEach(([k,v],i)=>{const b=document.createElement('button');b.textContent=v.label;b.dataset.k=k;if(!i)b.classList.add('on');b.addEventListener('click',()=>{$$('#ttabs button').forEach(x=>x.classList.remove('on'));b.classList.add('on');to.innerHTML=terms[k].body;});tt.appendChild(b);});
+to.innerHTML=terms.pages.body;
+})();
+</script>
+</body>
+</html>
