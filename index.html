@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","name":"quietfolio showcase","url":"https://salahu01.github.io/quietfolio-showcase/","author":{"@type":"Person","name":"Muhammed Swalahudheen C V"},"description":"Showcase site for quietfolio, a minimal fast accessible SEO-first developer portfolio template with a code-driven motion showreel."}
+{"@context":"https://schema.org","@type":"WebSite","name":"quietfolio showcase","url":"https://salahu01.github.io/quietfolio/","author":{"@type":"Person","name":"Muhammed Swalahudheen C V"},"description":"Showcase site for quietfolio, a minimal fast accessible SEO-first developer portfolio template with a code-driven motion showreel."}
 </script>
 <style>
 :root{
@@ -264,7 +264,7 @@ footer .bottom a{text-decoration:none} footer .bottom a:hover{color:var(--ink)}
     <li><a href="#ship">Ship</a></li>
     <li><a href="#resume">Résumé</a></li>
   </ul>
-  <a class="logo mono" style="font-size:12px;font-weight:400;letter-spacing:.12em" href="https://github.com/salahu01/quietfolio">GITHUB ↗</a>
+  <a class="logo mono" style="font-size:12px;font-weight:400;letter-spacing:.12em" href="https://github.com/salahu01/quietfolio-template">GITHUB ↗</a>
 </nav>
 
 <!-- HERO -->
@@ -277,7 +277,7 @@ footer .bottom a{text-decoration:none} footer .bottom a:hover{color:var(--ink)}
     <p class="hero-sub hero-in hero-indent">A minimal, fast, accessible, SEO-first developer portfolio — <span class="serif" style="font-size:1.12em">and the 23.5-second film that launches it,</span> rendered frame-by-frame from code.</p>
     <div class="hero-row hero-in hero-indent">
       <a class="btn solid magnet" href="#film">Watch the film <span class="arr">→</span></a>
-      <a class="btn magnet" href="https://salahu01.github.io/quietfolio-showcase/">Open the template <span class="arr">↗</span></a>
+      <a class="btn magnet" href="https://salahu01.github.io/quietfolio-template/">Open the template <span class="arr">↗</span></a>
       <button class="btn magnet" id="themeBtn">Toggle theme ◐</button>
     </div>
     <div class="hero-hud hero-in hero-indent">
@@ -435,7 +435,7 @@ CI runs <span class="s">lint → typecheck → validate → build</span>.</pre><
           <div class="tl-item"><time>2023 — PRESENT</time><b>Senior Full Stack Developer · Acme Corp</b><p>Lead a small team building customer-facing web products — architecture, APIs, CI/CD, performance budgets.</p></div>
           <div class="tl-item"><time>2020 — 2023</time><b>Full Stack Developer · Globex</b><p>Shipped internal tools and a public dashboard used by thousands every week.</p></div>
         </div>
-        <div class="hero-row"><a class="btn solid magnet" href="https://github.com/salahu01/quietfolio">Use this template <span class="arr">↗</span></a><a class="btn magnet" href="https://salahu01.github.io/quietfolio-showcase/resume">Sample /resume <span class="arr">↗</span></a></div>
+        <div class="hero-row"><a class="btn solid magnet" href="https://github.com/salahu01/quietfolio-template">Use this template <span class="arr">↗</span></a><a class="btn magnet" href="https://salahu01.github.io/quietfolio-template/resume">Sample /resume <span class="arr">↗</span></a></div>
       </div>
       <div class="stacks reveal">
         <div class="stack"><small>Languages</small><p>TypeScript · JavaScript · Python · SQL</p></div>
@@ -453,10 +453,10 @@ CI runs <span class="s">lint → typecheck → validate → build</span>.</pre><
   <div id="bigbg">quietfolio</div>
   <div class="wrap">
     <div class="kicker">Open source · MIT · template + film</div>
-    <div class="cta" style="margin-top:22px"><a href="https://github.com/salahu01/quietfolio">Star it on<br><span class="grad">GitHub ↗</span></a></div>
+    <div class="cta" style="margin-top:22px"><a href="https://github.com/salahu01/quietfolio-template">Star it on<br><span class="grad">GitHub ↗</span></a></div>
     <div class="bottom">
       <span>quietfolio showcase — © salahu01 · MIT</span>
-      <span><a href="https://salahu01.github.io/quietfolio-showcase/">Demo</a> · <a href="https://github.com/salahu01/quietfolio">Source</a> · <a href="https://github.com/salahu01/quietfolio/issues">Issues</a> · <a href="https://salahu01.github.io">salahu01.github.io</a></span>
+      <span><a href="https://salahu01.github.io/quietfolio-template/">Demo</a> · <a href="https://github.com/salahu01/quietfolio-template">Source</a> · <a href="https://github.com/salahu01/quietfolio-template/issues">Issues</a> · <a href="https://salahu01.github.io">salahu01.github.io</a></span>
     </div>
   </div>
 </footer>
@@ -628,7 +628,7 @@ const terms={
   pages:{label:'Pages',body:`<span class="c"># static export → gh-pages branch</span>\n<span class="p">$</span> npm run deploy:pages\n<span class="c"># STATIC_EXPORT=1, BASE_PATH=/&lt;repo&gt;</span>\n<span class="c"># Settings → Pages → gh-pages / root</span>\n<span class="c"># → https://&lt;user&gt;.github.io/&lt;repo&gt;/</span> <span class="caret"></span>`},
   check:{label:'Check (CI)',body:`<span class="p">$</span> npm run check\n<span class="c"># lint → typecheck → validate → build</span>\n<span class="p">$</span> npm run validate  <span class="c"># links, images, slugs</span>\n<span class="p">$</span> npm run resume    <span class="c"># rebuild resume.pdf</span> <span class="caret"></span>`},
   film:{label:'Film',body:`<span class="p">$</span> <span class="c"># motion-graphics/quietfolio-launch</span>\nnpm install && npm run setup\nnpm run build  <span class="c"># video·sound·mux·linkedin·thumb·cover</span>\nls output/  <span class="c"># showreel + poster + cover</span> <span class="caret"></span>`},
-  mine:{label:'Make it yours',body:`<span class="p">$</span> git clone https://github.com/salahu01/quietfolio my-site\n<span class="p">$</span> nvm use && npm install && npm run dev\n<span class="c"># 1. lib/data.ts = you   2. content/*.json = writing</span>\n<span class="c"># 3. public/img/* = faces  4. NEXT_PUBLIC_SITE_URL = truth</span> <span class="caret"></span>`}};
+  mine:{label:'Make it yours',body:`<span class="p">$</span> git clone https://github.com/salahu01/quietfolio-template my-site\n<span class="p">$</span> nvm use && npm install && npm run dev\n<span class="c"># 1. lib/data.ts = you   2. content/*.json = writing</span>\n<span class="c"># 3. public/img/* = faces  4. NEXT_PUBLIC_SITE_URL = truth</span> <span class="caret"></span>`}};
 const tt=$('#ttabs'),to=$('#tout');
 Object.entries(terms).forEach(([k,v],i)=>{const b=document.createElement('button');b.textContent=v.label;b.dataset.k=k;if(!i)b.classList.add('on');b.addEventListener('click',()=>{$$('#ttabs button').forEach(x=>x.classList.remove('on'));b.classList.add('on');to.innerHTML=terms[k].body;});tt.appendChild(b);});
 to.innerHTML=terms.pages.body;
