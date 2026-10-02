@@ -71,7 +71,6 @@ html[data-theme="light"] #hero .veil{background:radial-gradient(ellipse at 50% 1
 .kicker:before{content:"";width:34px;height:1px;background:currentColor}
 h1.title{font-family:var(--serif);font-weight:400;font-size:clamp(56px,13.5vw,210px);line-height:.9;letter-spacing:-.02em;margin:20px 0 18px}
 h1.title .ch{display:inline-block;will-change:transform}
-.hero-indent{margin-left:clamp(24px,6vw,110px)}
 .hero-sub{font-size:clamp(19px,2.4vw,32px);line-height:1.2;max-width:900px;font-weight:300}
 .hero-row{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap;align-items:center}
 .btn{display:inline-flex;align-items:center;gap:10px;padding:15px 24px;border-radius:999px;font-family:var(--mono);font-size:13px;text-transform:uppercase;letter-spacing:.1em;text-decoration:none;border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 6%,transparent);backdrop-filter:blur(10px);transition:transform .3s,background .3s,color .3s;color:var(--ink)}
@@ -271,14 +270,14 @@ footer .bottom a{text-decoration:none} footer .bottom a:hover{color:var(--ink)}
   <div class="veil"></div>
   <div class="content wrap">
     <div class="kicker hero-in">A motion-design résumé · Next.js · MIT · live demo below</div>
-    <h1 class="title hero-indent" aria-label="quietfolio"><span id="htitle">quietfolio</span></h1>
-    <p class="hero-sub hero-in hero-indent">A minimal, fast, accessible, SEO-first developer portfolio — <span class="serif" style="font-size:1.12em">and the 23.5-second film that launches it,</span> rendered frame-by-frame from code.</p>
-    <div class="hero-row hero-in hero-indent">
+    <h1 class="title" aria-label="quietfolio"><span id="htitle">quietfolio</span></h1>
+    <p class="hero-sub hero-in">A minimal, fast, accessible, SEO-first developer portfolio — <span class="serif" style="font-size:1.12em">and the 23.5-second film that launches it,</span> rendered frame-by-frame from code.</p>
+    <div class="hero-row hero-in">
       <a class="btn solid magnet" href="#film">Watch the film <span class="arr">→</span></a>
       <a class="btn magnet" href="https://salahu01.github.io/quietfolio/">Open the template <span class="arr">↗</span></a>
       <button class="btn magnet" id="themeBtn">Toggle theme ◐</button>
     </div>
-    <div class="hero-hud hero-in hero-indent">
+    <div class="hero-hud hero-in">
       <div>FIELD <b class="ok">PROCEDURAL · 60 FPS</b></div>
       <div>FRAMES IN FLIGHT <b>1</b></div>
       <div>BUILD <b>STATIC · 0 SERVERS</b></div>
