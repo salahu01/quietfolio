@@ -576,9 +576,13 @@ if(hasGsap&&typeof ScrollTrigger!=="undefined"&&!RM){
 
 /* ---------- chapters scrub ---------- */
 const reel=$('#reel');
+let pendingSeek=null;
+reel.addEventListener('loadedmetadata',()=>{if(pendingSeek!=null){try{reel.currentTime=pendingSeek;}catch(e){}pendingSeek=null;}});
 $$('#chapters .chap').forEach(c=>c.addEventListener('click',()=>{
   $$('#chapters .chap').forEach(x=>x.classList.remove('on'));c.classList.add('on');
-  try{reel.currentTime=parseFloat(c.dataset.t);reel.play();}catch(e){}
+  const t=parseFloat(c.dataset.t),go=()=>{reel.play().catch(()=>{});};
+  if(reel.readyState>=1){try{reel.currentTime=t;}catch(e){pendingSeek=t;}go();}
+  else{pendingSeek=t;try{reel.load();}catch(e){}go();}
   $('#reelCap').textContent='SHOWREEL · @ '+c.dataset.t+'s · '+c.querySelector('h4').textContent.toUpperCase();
 }));
 
